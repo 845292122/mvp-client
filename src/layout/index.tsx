@@ -2,7 +2,7 @@ import { Layout } from 'antd'
 import { createStyles } from 'antd-style'
 import { useAtomValue } from 'jotai'
 import { Outlet } from 'react-router'
-import { appJotai } from '~/store'
+import { appStore } from '~/store'
 import AppNav from './AppNav'
 import AppHeader from './AppHeader'
 import Profile from './Profile'
@@ -22,7 +22,7 @@ const useStyles = createStyles(() => {
 const AppLayout = () => {
   const { Sider, Content } = Layout
   const { styles } = useStyles()
-  const navCollapsed = useAtomValue(appJotai.navCollapsedAtom)
+  const navCollapsed = useAtomValue(appStore.navCollapsedAtom)
   const [visible, setVisible] = useState<boolean>(false)
   const closeProfile = () => {
     setVisible(false)

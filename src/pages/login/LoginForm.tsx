@@ -4,7 +4,7 @@ import { createStyles } from 'antd-style'
 import { useSetAtom } from 'jotai'
 import { useNavigate } from 'react-router'
 import { authApi } from '~/api'
-import { authJotai } from '~/store'
+import { authStore } from '~/store'
 
 const useStyles = createStyles(() => {
   return {
@@ -29,9 +29,9 @@ export default function LoginForm() {
   const { styles } = useStyles()
   const [form] = Form.useForm()
   const navigate = useNavigate()
-  const setToken = useSetAtom(authJotai.tokenAtom)
-  const setAuthInfo = useSetAtom(authJotai.authInfoAtom)
-  const setPerm = useSetAtom(authJotai.permAtom)
+  const setToken = useSetAtom(authStore.tokenAtom)
+  const setAuthInfo = useSetAtom(authStore.authInfoAtom)
+  const setPerm = useSetAtom(authStore.permAtom)
 
   const handleLogin: FormProps<ApiType.Auth.Login>['onFinish'] = async values => {
     const tokenVal = await authApi.login(values)

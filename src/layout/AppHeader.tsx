@@ -7,9 +7,7 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router'
 import ProfileContext from '~/context/ProfileContext'
 import { useRouteMeta } from '~/hooks/useRouteMeta'
-import { appJotai, authJotai } from '~/store'
-
-type AppHeaderProps = {}
+import { appStore, authStore } from '~/store'
 
 const useStyles = createStyles(() => {
   return {
@@ -48,9 +46,9 @@ const useStyles = createStyles(() => {
 const ActionBar: React.FC = () => {
   const { styles } = useStyles()
   const navigate = useNavigate()
-  const setToken = useSetAtom(authJotai.tokenAtom)
-  const setAuthInfo = useSetAtom(authJotai.authInfoAtom)
-  const setPerms = useSetAtom(authJotai.permAtom)
+  const setToken = useSetAtom(authStore.tokenAtom)
+  const setAuthInfo = useSetAtom(authStore.authInfoAtom)
+  const setPerms = useSetAtom(authStore.permAtom)
 
   const profileContext = useContext(ProfileContext)
   if (!profileContext) throw new Error('ProfileContext is undefined')
@@ -91,9 +89,9 @@ const ActionBar: React.FC = () => {
   )
 }
 
-const AppHeader: React.FC<AppHeaderProps> = () => {
+const AppHeader: React.FC = () => {
   const { styles } = useStyles()
-  const [collapseMenu, setCollapseMenu] = useAtom(appJotai.navCollapsedAtom)
+  const [collapseMenu, setCollapseMenu] = useAtom(appStore.navCollapsedAtom)
   const routeMeta = useRouteMeta()
 
   const toggleCollapseMenu = () => {

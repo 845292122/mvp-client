@@ -2,17 +2,15 @@ import { Descriptions, Drawer } from 'antd'
 import { useAtomValue } from 'jotai'
 import React, { useContext } from 'react'
 import ProfileContext from '~/context/ProfileContext'
-import { authJotai } from '~/store'
+import { authStore } from '~/store'
 import type { DescriptionsProps } from 'antd'
 
-type ProfileProps = {}
-
-const Profile: React.FC<ProfileProps> = () => {
+const Profile: React.FC = () => {
   const profileContext = useContext(ProfileContext)
   if (!profileContext) throw new Error('profile context is undefined')
 
   const { visible, closeProfile } = profileContext
-  const authInfo = useAtomValue(authJotai.authInfoAtom)
+  const authInfo = useAtomValue(authStore.authInfoAtom)
 
   const { nickname, phone, isMaster, email } = authInfo ?? {}
   const items: DescriptionsProps['items'] = [

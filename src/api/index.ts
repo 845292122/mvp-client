@@ -8,7 +8,7 @@ import type {
   AxiosRequestConfig
 } from 'axios'
 import { getDefaultStore } from 'jotai'
-import { authJotai } from '~/store'
+import { authStore } from '~/store'
 
 export class Request {
   service: AxiosInstance
@@ -23,7 +23,7 @@ export class Request {
     this.service.interceptors.request.use(
       (request: InternalAxiosRequestConfig) => {
         const store = getDefaultStore()
-        const token = store.get(authJotai.tokenAtom)
+        const token = store.get(authStore.tokenAtom)
         if (token) {
           request.headers['Authorization'] = 'Bearer ' + token
         }
@@ -84,11 +84,11 @@ export class Request {
     return this.service.get(url, config)
   }
 
-  post<T = unknown>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  post<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     return this.service.post(url, data, config)
   }
 
-  put<T = unknown>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  put<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     return this.service.put(url, data, config)
   }
 

@@ -4,7 +4,7 @@ import { useAtomValue } from 'jotai'
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import BizRoutes from '~/router/routes'
-import { authJotai } from '~/store'
+import { authStore } from '~/store'
 import AppLogo from '~/assets/react.svg'
 import { createStyles } from 'antd-style'
 
@@ -55,7 +55,7 @@ const AppNav: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const title = import.meta.env.VITE_APP_TITLE
-  const perms = useAtomValue(authJotai.permAtom)
+  const perms = useAtomValue(authStore.permAtom)
   const [menuList, setMenuList] = React.useState<MenuItem[]>([])
   const [openKeys, setOpenKeys] = React.useState<string[]>([])
   const [selectedKeys, setSelectedKeys] = React.useState<string[]>([pathname])

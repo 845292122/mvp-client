@@ -2,6 +2,6 @@ import { atom } from 'jotai'
 
 const navCollapsedAtom = atom(true)
 
-export const appJotai = {
+export const appStore = {
   navCollapsedAtom
 }

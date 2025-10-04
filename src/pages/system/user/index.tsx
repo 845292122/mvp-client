@@ -9,7 +9,7 @@ import type { TreeDataNode } from 'antd'
 import { filterChildKeys, generatePermissionByBizRoutes } from '~/utils'
 import AssignPermission from '~/components/AssignPermission'
 import { useAtomValue } from 'jotai'
-import { authJotai } from '~/store'
+import { authStore } from '~/store'
 
 const queryFormFields: QueryFormField[] = [
   {
@@ -36,7 +36,7 @@ const queryFormFields: QueryFormField[] = [
 
 const User: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage()
-  const authInfo = useAtomValue(authJotai.authInfoAtom)
+  const authInfo = useAtomValue(authStore.authInfoAtom)
 
   const [form] = Form.useForm()
   const [infoVisible, setInfoVisible] = useState<boolean>(false)
@@ -202,7 +202,7 @@ const User: React.FC = () => {
 
   const getTableData = async (
     { current, pageSize }: UtilType.AhookRequestParam,
-    formData: Object
+    formData: object
   ): Promise<{
     total: number
     list: ApiType.User.Info[]

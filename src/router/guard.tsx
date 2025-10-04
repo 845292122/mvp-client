@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from 'react-router'
 import { routes } from '.'
 import { useAtomValue } from 'jotai'
-import { authJotai } from '~/store'
+import { authStore } from '~/store'
 
 // * 根据路由地址查找路由
 export function findRoute(
@@ -23,8 +23,8 @@ export function findRoute(
  * * 路由守卫 (授权认证校验)
  */
 const AuthGuard = ({ children }: { children: JSX.Element }) => {
-  const token = useAtomValue(authJotai.tokenAtom)
-  const perms = useAtomValue(authJotai.permAtom)
+  const token = useAtomValue(authStore.tokenAtom)
+  const perms = useAtomValue(authStore.permAtom)
   const { pathname } = useLocation()
 
   // * 如果token存在并且访问login页面跳转到 /

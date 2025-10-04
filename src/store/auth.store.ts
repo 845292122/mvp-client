@@ -1,6 +1,6 @@
 import { atomWithStorage } from 'jotai/utils'
 
-const tokenAtom = atomWithStorage<string | undefined>('token', undefined)
+const tokenAtom = atomWithStorage<string | undefined>('token', 'undefined')
 const authInfoAtom = atomWithStorage<ApiType.Auth.Info | undefined>('info', undefined)
 const permAtom = atomWithStorage<string[]>('perm', [
   'home',
@@ -13,7 +13,7 @@ const permAtom = atomWithStorage<string[]>('perm', [
   'system:tenant'
 ])
 
-export const authJotai = {
+export const authStore = {
   tokenAtom,
   authInfoAtom,
   permAtom
