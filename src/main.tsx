@@ -28,9 +28,7 @@ const antdTheme: ThemeConfig = {
       itemSelectedBg: '#eaeaea',
       itemSelectedColor: '#0c0c0c',
       itemMarginInline: 10,
-      // itemHeight: 38,
       itemBorderRadius: 6
-      // collapsedIconSize: 28
     }
   }
 }

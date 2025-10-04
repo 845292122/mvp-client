@@ -1,43 +1,12 @@
 import { HamburgerButton } from '@icon-park/react'
 import { Menu, MenuProps } from 'antd'
 import { useAtomValue } from 'jotai'
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import BizRoutes from '~/router/routes'
 import { authStore } from '~/store'
-import AppLogo from '~/assets/react.svg'
-import { createStyles } from 'antd-style'
 
 type MenuItem = Required<MenuProps>['items'][number]
-
-const useStyles = createStyles(() => {
-  return {
-    logoContainer: {
-      padding: '10px 0',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '56px'
-    },
-    logoTitle: {
-      marginLeft: '8px',
-      maxWidth: '120px',
-      flexShrink: '0',
-      fontSize: '18px',
-      // color: token.colorPrimary,
-      fontWeight: 'bold',
-      color: 'white'
-    },
-    menuContainer: {
-      flex: '1',
-      marginTop: '4px',
-      overflowY: 'auto',
-      '.ant-menu-dark .ant-menu-submenu-selected > .ant-menu-submenu-title': {
-        color: '#ffffff !important' // 设置选中的父菜单背景色
-      }
-    }
-  }
-})
 
 const getOpenKeys = (path: string) => {
   let newStr: string = ''
@@ -50,15 +19,13 @@ const getOpenKeys = (path: string) => {
   return newArr
 }
 
-const AppNav: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
-  const { styles } = useStyles()
+export default function AppMenu({ collapsed }: { collapsed: boolean }) {
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  const title = import.meta.env.VITE_APP_TITLE
   const perms = useAtomValue(authStore.permAtom)
-  const [menuList, setMenuList] = React.useState<MenuItem[]>([])
-  const [openKeys, setOpenKeys] = React.useState<string[]>([])
-  const [selectedKeys, setSelectedKeys] = React.useState<string[]>([pathname])
+  const [menuList, setMenuList] = useState<MenuItem[]>([])
+  const [openKeys, setOpenKeys] = useState<string[]>([])
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([pathname])
   const clickMenu = ({ key }: { key: string }) => {
     navigate(key)
   }
@@ -70,14 +37,14 @@ const AppNav: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
     setOpenKeys([latestOpenKey])
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     setSelectedKeys([pathname])
     if (collapsed) {
       setOpenKeys(getOpenKeys(pathname))
     }
   }, [pathname, collapsed])
 
-  React.useEffect(() => {
+  useEffect(() => {
     const filterAndConvertMenuByPerms = (
       routes: RouteType.RouteInfo[],
       perms: string[]
@@ -120,26 +87,18 @@ const AppNav: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
   }, [perms])
 
   return (
-    <React.Fragment>
-      <div className={styles.logoContainer}>
-        <img src={AppLogo} alt="logo" />
-        {collapsed && <span className={styles.logoTitle}>{title}</span>}
-      </div>
-      <div className={styles.menuContainer}>
-        <Menu
-          items={menuList}
-          theme="dark"
-          mode="inline"
-          selectedKeys={selectedKeys}
-          openKeys={openKeys}
-          triggerSubMenuAction="click"
-          inlineIndent={24}
-          onClick={clickMenu}
-          onOpenChange={onOpenChange}
-        />
-      </div>
-    </React.Fragment>
+    <Menu
+      items={menuList}
+      mode="inline"
+      selectedKeys={selectedKeys}
+      openKeys={openKeys}
+      triggerSubMenuAction="click"
+      inlineIndent={24}
+      onClick={clickMenu}
+      onOpenChange={onOpenChange}
+      style={{
+        borderRight: 0
+      }}
+    />
   )
 }
-
-export default AppNav
