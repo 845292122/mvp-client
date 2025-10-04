@@ -1,5 +1,4 @@
 import { createStyles } from 'antd-style'
-import React from 'react'
 import loginIll from '~/assets/login/login-ill.svg'
 import LoginForm from './LoginForm'
 import LoginBg from '~/assets/login/login-bg.png'
@@ -34,8 +33,8 @@ const useStyles = createStyles(() => {
       alignItems: 'center'
     },
     loginCard: {
-      minWidth: '800px',
-      minHeight: '400px',
+      minWidth: '850px',
+      minHeight: '500px',
       margin: 'auto',
       background: 'white',
       display: 'flex',
@@ -59,7 +58,7 @@ const useStyles = createStyles(() => {
   }
 })
 
-const Login: React.FC = () => {
+export default function Login() {
   const { styles } = useStyles()
   return (
     <div className={styles.loginContainer}>
@@ -76,5 +75,3 @@ const Login: React.FC = () => {
     </div>
   )
 }
-
-export default Login

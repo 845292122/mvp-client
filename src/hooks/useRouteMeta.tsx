@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router'
-import { findRoute } from '~/router/helper/authRouter'
+import { findRoute } from '~/router/guard'
 import BizRoutes from '~/router/routes'
 
 export const useRouteMeta = (): RouteType.RouteMeta => {

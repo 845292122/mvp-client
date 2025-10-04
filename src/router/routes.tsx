@@ -1,8 +1,25 @@
 import AppLayout from '~/layout'
 import Home from '~/pages/common/home'
 import { HomeTwo, SettingTwo } from '@icon-park/react'
-import React from 'react'
-import lazyLoad from './helper/lazyLoad'
+import React, { lazy } from 'react'
+import { Spin } from 'antd'
+
+const Loading = () => {
+  return (
+    <div className="flex items-center justify-center">
+      <Spin />
+    </div>
+  )
+}
+
+const lazyLoad = (importFunc: () => Promise<{ default: React.ComponentType }>) => {
+  const Component = lazy(importFunc)
+  return (
+    <React.Suspense fallback={<Loading />}>
+      <Component />
+    </React.Suspense>
+  )
+}
 
 const BizRoutes: RouteType.RouteInfo[] = [
   // * 通用路由
@@ -33,7 +50,7 @@ const BizRoutes: RouteType.RouteInfo[] = [
     children: [
       {
         path: '/system/tenant',
-        element: lazyLoad(React.lazy(() => import('~/pages/system/tenant'))),
+        element: lazyLoad(() => import('~/pages/system/tenant')),
         meta: {
           title: '租户管理',
           key: '/system/tenant',
@@ -42,7 +59,7 @@ const BizRoutes: RouteType.RouteInfo[] = [
       },
       {
         path: '/system/user',
-        element: lazyLoad(React.lazy(() => import('~/pages/system/user'))),
+        element: lazyLoad(() => import('~/pages/system/user')),
         meta: {
           title: '用户管理',
           key: '/system/user',
@@ -51,7 +68,7 @@ const BizRoutes: RouteType.RouteInfo[] = [
       },
       {
         path: '/system/log',
-        element: lazyLoad(React.lazy(() => import('~/pages/system/log'))),
+        element: lazyLoad(() => import('~/pages/system/log')),
         meta: {
           title: '操作日志',
           key: '/system/log',
@@ -67,7 +84,7 @@ const BizRoutes: RouteType.RouteInfo[] = [
     children: [
       {
         path: '/403',
-        element: lazyLoad(React.lazy(() => import('~/pages/error/Unauthorized'))),
+        element: lazyLoad(() => import('~/pages/error/Unauthorized')),
         meta: {
           title: '未授权',
           key: '403',
@@ -77,7 +94,7 @@ const BizRoutes: RouteType.RouteInfo[] = [
       },
       {
         path: '/404',
-        element: lazyLoad(React.lazy(() => import('~/pages/error/NotFound'))),
+        element: lazyLoad(() => import('~/pages/error/NotFound')),
         meta: {
           title: '页面飞走了~',
           hidden: true,

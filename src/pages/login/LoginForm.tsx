@@ -2,21 +2,30 @@ import { Key, Phone, Wechat } from '@icon-park/react'
 import { Button, Checkbox, Divider, Form, FormProps, Input, message, Tooltip } from 'antd'
 import { createStyles } from 'antd-style'
 import { useSetAtom } from 'jotai'
-import React from 'react'
 import { useNavigate } from 'react-router'
 import { authApi } from '~/api'
 import { authJotai } from '~/store'
-import { _localStorage } from '~/utils'
 
 const useStyles = createStyles(() => {
   return {
+    title: {
+      fontSize: 24,
+      fontWeight: 'bold'
+    },
+    description: {
+      fontSize: 14,
+      color: '#838282ff',
+      marginTop: '4px',
+      maxWidth: '300px',
+      marginBottom: '20px'
+    },
     loginForm: {
       marginBottom: '0'
     }
   }
 })
 
-const LoginForm: React.FC = () => {
+export default function LoginForm() {
   const { styles } = useStyles()
   const [form] = Form.useForm()
   const navigate = useNavigate()
@@ -37,7 +46,10 @@ const LoginForm: React.FC = () => {
 
   return (
     <div style={{ minWidth: '300px' }}>
-      <h2>欢迎使用</h2>
+      <span className={styles.title}>欢迎使用</span>
+      <p className={styles.description}>
+        这是您的智能运营控制台，专注高效与安全，让日常管理更轻松。
+      </p>
       <Form
         name="login"
         form={form}
@@ -81,5 +93,3 @@ const LoginForm: React.FC = () => {
     </div>
   )
 }
-
-export default LoginForm

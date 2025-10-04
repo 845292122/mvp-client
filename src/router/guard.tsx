@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from 'react-router'
-import { routes } from '..'
+import { routes } from '.'
 import { useAtomValue } from 'jotai'
 import { authJotai } from '~/store'
 
@@ -22,7 +22,7 @@ export function findRoute(
 /**
  * * 路由守卫 (授权认证校验)
  */
-const AuthRouter = ({ children }: { children: JSX.Element }) => {
+const AuthGuard = ({ children }: { children: JSX.Element }) => {
   const token = useAtomValue(authJotai.tokenAtom)
   const perms = useAtomValue(authJotai.permAtom)
   const { pathname } = useLocation()
@@ -48,4 +48,4 @@ const AuthRouter = ({ children }: { children: JSX.Element }) => {
   return children
 }
 
-export default AuthRouter
+export default AuthGuard

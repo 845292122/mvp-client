@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
 import Router from './router'
-import AuthRouter from './router/helper/authRouter'
+import AuthGuard from './router/guard'
 import { ConfigProvider, ThemeConfig } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
 import './main.css'
@@ -37,11 +37,11 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ConfigProvider locale={zhCN} theme={antdTheme}>
       <BrowserRouter>
-        <AuthRouter>
+        <AuthGuard>
           <App>
             <Router />
           </App>
-        </AuthRouter>
+        </AuthGuard>
       </BrowserRouter>
     </ConfigProvider>
   </StrictMode>

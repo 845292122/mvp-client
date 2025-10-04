@@ -10,8 +10,8 @@
     "preview": "vite preview",
     "format": "prettier --write 'src/**/*.{js,ts,tsx}'",
     "prepare": "husky",
-    "commit": "git add . && git-cz",
-    "release": "standard-version"
+    "release": "standard-version",
+    "commit": "git add . && git-cz"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
@@ -34,6 +34,7 @@
     "axios": "^1.7.9",
     "dayjs": "^1.11.13",
     "jotai": "^2.11.1",
+    "rc-tween-one": "^3.0.6",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router": "^7.1.3"
