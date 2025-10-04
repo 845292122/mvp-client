@@ -17,7 +17,8 @@ const antdTheme: ThemeConfig = {
   },
   components: {
     Layout: {
-      lightSiderBg: '#f5f5f5'
+      lightSiderBg: '#f5f5f5',
+      bodyBg: '#fff'
     },
     Menu: {
       itemBg: '#f3f4f4',
