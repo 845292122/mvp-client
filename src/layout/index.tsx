@@ -49,7 +49,8 @@ export default function AppLayout() {
         collapsible
         className={styles.sider}
         trigger={null}
-        width={230}
+        width={220}
+        collapsedWidth={60}
       >
         <AppTitle collapsed={navCollapsed} />
         <div className={styles.menuWrapper}>
