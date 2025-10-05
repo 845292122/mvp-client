@@ -12,7 +12,7 @@ const useStyles = createStyles(() => ({
     justifyContent: 'center'
   },
   unCollapsedWrapper: {
-    marginLeft: '20px'
+    marginLeft: '27px'
   },
   title: {
     marginLeft: '8px',
