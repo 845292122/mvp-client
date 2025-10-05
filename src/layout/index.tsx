@@ -33,6 +33,9 @@ const useStyles = createStyles(() => ({
     padding: '10px 12px',
     display: 'flex',
     alignItems: 'center'
+  },
+  content: {
+    padding: '25px'
   }
 }))
 
@@ -59,7 +62,7 @@ export default function AppLayout() {
         <div className={styles.actionWrapper}>{<AppAction />}</div>
       </Sider>
       <Layout>
-        <Content>
+        <Content className={styles.content}>
           <Outlet />
         </Content>
       </Layout>

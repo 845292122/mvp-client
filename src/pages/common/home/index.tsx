@@ -1,8 +1,10 @@
+import CommonPage from '~/components/CommonPage'
+
 const Home: React.FC = () => {
   return (
-    <div>
-      <h1>Home</h1>
-    </div>
+    <CommonPage>
+      <div>Home1231</div>
+    </CommonPage>
   )
 }
 
