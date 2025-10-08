@@ -19,17 +19,17 @@ export default function CommonPage({ children }: { children: React.ReactNode }) 
         <div
           style={{
             borderRadius: '0.5rem',
-            height: '25px',
+            height: '20px',
             width: '5px',
             marginRight: '5px',
             backgroundColor: '#1d1db7'
           }}
         />
-        <Typography.Text strong style={{ fontSize: '18px' }}>
+        <Typography.Text strong style={{ fontSize: '16px' }}>
           {routeMeta.title}
         </Typography.Text>
       </div>
-      <div style={{ marginTop: '10px' }}>{children}</div>
+      <div style={{ marginTop: '30px' }}>{children}</div>
     </>
   )
 }

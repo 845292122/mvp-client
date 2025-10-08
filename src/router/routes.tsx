@@ -67,6 +67,15 @@ const BizRoutes: RouteType.RouteInfo[] = [
         }
       },
       {
+        path: '/system/account',
+        element: lazyLoad(() => import('~/pages/system/account')),
+        meta: {
+          title: '账号管理',
+          key: '/system/account',
+          perm: 'system:account'
+        }
+      },
+      {
         path: '/system/log',
         element: lazyLoad(() => import('~/pages/system/log')),
         meta: {
