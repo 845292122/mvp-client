@@ -1,8 +1,9 @@
-import AppLayout from '~/layout'
+import AppLayout from '~/layout/index'
 import Home from '~/pages/common/home'
 import { HomeTwo, SettingTwo } from '@icon-park/react'
 import React, { lazy } from 'react'
 import { Spin } from 'antd'
+import { RouteInfo } from '.'
 
 const Loading = () => {
   return (
@@ -21,7 +22,7 @@ const lazyLoad = (importFunc: () => Promise<{ default: React.ComponentType }>) =
   )
 }
 
-const BizRoutes: RouteType.RouteInfo[] = [
+const BizRoutes: RouteInfo[] = [
   // * 通用路由
   {
     element: <AppLayout />,
@@ -44,7 +45,6 @@ const BizRoutes: RouteType.RouteInfo[] = [
     meta: {
       key: '/system',
       title: '系统管理',
-      perm: 'system',
       icon: <SettingTwo theme="outline" size="18" strokeLinecap="square" />
     },
     children: [
@@ -53,8 +53,7 @@ const BizRoutes: RouteType.RouteInfo[] = [
         element: lazyLoad(() => import('~/pages/system/tenant')),
         meta: {
           title: '租户管理',
-          key: '/system/tenant',
-          perm: 'system:tenant'
+          key: '/system/tenant'
         }
       },
       {
@@ -62,8 +61,7 @@ const BizRoutes: RouteType.RouteInfo[] = [
         element: lazyLoad(() => import('~/pages/system/user')),
         meta: {
           title: '用户管理',
-          key: '/system/user',
-          perm: 'system:user'
+          key: '/system/user'
         }
       },
       {
@@ -71,8 +69,7 @@ const BizRoutes: RouteType.RouteInfo[] = [
         element: lazyLoad(() => import('~/pages/system/account')),
         meta: {
           title: '账号管理',
-          key: '/system/account',
-          perm: 'system:account'
+          key: '/system/account'
         }
       },
       {
@@ -80,8 +77,7 @@ const BizRoutes: RouteType.RouteInfo[] = [
         element: lazyLoad(() => import('~/pages/system/log')),
         meta: {
           title: '操作日志',
-          key: '/system/log',
-          perm: 'system:log'
+          key: '/system/log'
         }
       }
     ]
@@ -97,8 +93,7 @@ const BizRoutes: RouteType.RouteInfo[] = [
         meta: {
           title: '未授权',
           key: '403',
-          hidden: true,
-          requireAuth: true
+          hidden: true
         }
       },
       {

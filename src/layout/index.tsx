@@ -1,71 +1,74 @@
-import { Layout } from 'antd'
-import { createStyles } from 'antd-style'
-import { Outlet } from 'react-router'
-import AppTitle from './AppTitle'
+import { InfoCircleFilled, QuestionCircleFilled } from '@ant-design/icons'
+import { PageContainer, ProLayout } from '@ant-design/pro-components'
+import type { ProLayoutProps } from '@ant-design/pro-components'
 import { useAtomValue } from 'jotai'
-import { appStore } from '~/store'
-import AppMenu from './AppMenu'
-import AppAction from './AppAction'
-
-const useStyles = createStyles(() => ({
-  appWrapper: {
-    display: 'flex',
-    width: '100vw',
-    height: '100vh'
-  },
-  sider: {
-    '& > .ant-layout-sider-children': {
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100%'
-    }
-  },
-  menuWrapper: {
-    flex: 1,
-    minHeight: 0,
-    overflowY: 'auto',
-    overflowX: 'hidden'
-  },
-  actionWrapper: {
-    marginTop: 'auto',
-    height: '72px',
-    borderTop: '1px solid #f0f0f0',
-    padding: '10px 12px',
-    display: 'flex',
-    alignItems: 'center'
-  },
-  content: {
-    padding: '25px'
-  }
-}))
+import { Suspense } from 'react'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router'
+import AppLogo from '~/assets/react.svg'
+import { authStore } from '~/store'
+import { buildProLayoutMenu } from '~/utils'
 
 export default function AppLayout() {
-  const { Sider, Content } = Layout
-  const { styles } = useStyles()
-  const navCollapsed = useAtomValue(appStore.navCollapsedAtom)
+  const location = useLocation()
+  const navigate = useNavigate()
+  const tokenVal = useAtomValue(authStore.tokenAtom)
+
+  // TODO role暂时写死
+  const proRoute: ProLayoutProps['route'] = buildProLayoutMenu({
+    token: tokenVal,
+    role: 'admin'
+  })
+
+  console.log(proRoute)
 
   return (
-    <Layout className={styles.appWrapper}>
-      <Sider
-        theme="light"
-        collapsed={!navCollapsed}
-        collapsible
-        className={styles.sider}
-        trigger={null}
-        width={220}
-        collapsedWidth={60}
-      >
-        <AppTitle collapsed={navCollapsed} />
-        <div className={styles.menuWrapper}>
-          <AppMenu collapsed={navCollapsed} />
-        </div>
-        <div className={styles.actionWrapper}>{<AppAction />}</div>
-      </Sider>
-      <Layout>
-        <Content className={styles.content}>
+    <ProLayout
+      title="管理后台"
+      logo={AppLogo}
+      fixSiderbar
+      siderWidth={216}
+      bgLayoutImgList={[
+        {
+          src: 'https://img.alicdn.com/imgextra/i2/O1CN01O4etvp1DvpFLKfuWq_!!6000000000279-2-tps-609-606.png',
+          left: 85,
+          bottom: 100,
+          height: '303px'
+        },
+        {
+          src: 'https://img.alicdn.com/imgextra/i2/O1CN01O4etvp1DvpFLKfuWq_!!6000000000279-2-tps-609-606.png',
+          bottom: -68,
+          right: -45,
+          height: '303px'
+        },
+        {
+          src: 'https://img.alicdn.com/imgextra/i3/O1CN018NxReL1shX85Yz6Cx_!!6000000005798-2-tps-884-496.png',
+          bottom: 0,
+          left: 0,
+          width: '331px'
+        }
+      ]}
+      avatarProps={{
+        src: 'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
+        title: '七妮妮',
+        size: 'small'
+      }}
+      actionsRender={props => {
+        if (props.isMobile) return []
+        return [
+          <InfoCircleFilled key="InfoCircleFilled" />,
+          <QuestionCircleFilled key="QuestionCircleFilled" />
+        ]
+      }}
+      route={proRoute}
+      menuItemRender={(item, dom) => (item.path ? <Link to={item.path}>{dom}</Link> : dom)}
+      location={{ pathname: location.pathname }}
+      onMenuHeaderClick={() => navigate('/')}
+    >
+      <PageContainer>
+        <Suspense fallback={<div style={{ padding: 40 }}>Loading...</div>}>
           <Outlet />
-        </Content>
-      </Layout>
-    </Layout>
+        </Suspense>
+      </PageContainer>
+    </ProLayout>
   )
 }

@@ -14,23 +14,6 @@ import { store } from './store'
 const antdTheme: ThemeConfig = {
   token: {
     colorPrimary: '#0251bf'
-  },
-  components: {
-    Layout: {
-      lightSiderBg: '#f5f5f5',
-      bodyBg: '#fff'
-    },
-    Menu: {
-      itemBg: '#f3f4f4',
-      subMenuItemBg: '#f5f5f5',
-      itemColor: '#575757',
-      itemHoverBg: '#eaeaea',
-      popupBg: '#eaeaea',
-      itemSelectedBg: '#eaeaea',
-      itemSelectedColor: '#0c0c0c',
-      itemMarginInline: 10,
-      itemBorderRadius: 6
-    }
   }
 }
 

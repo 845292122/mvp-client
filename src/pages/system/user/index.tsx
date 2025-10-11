@@ -6,7 +6,6 @@ import { tenantApi, userApi } from '~/api'
 import InfoModal, { GenerateFormValues, InfoModalFieldType } from '~/components/InfoModal'
 import QueryForm, { QueryFormField } from '~/components/QueryForm'
 import type { TreeDataNode } from 'antd'
-import { filterChildKeys, generatePermissionByBizRoutes } from '~/utils'
 import AssignPermission from '~/components/AssignPermission'
 import { useAtomValue } from 'jotai'
 import { authStore } from '~/store'
@@ -45,9 +44,9 @@ const User: React.FC = () => {
     Array<{ label: string; value: string | number }>
   >([])
   const [assignPermissionVisible, setAssignPermissionVisible] = useState<boolean>(false)
-  const [permissionTreeData, setPermissionTreeData] = useState<TreeDataNode[]>([])
-  const [selectedRowId, setSelectedRowId] = useState<number | undefined>()
-  const [defaultPermCheckedKeys, setDefaultPermCheckedKeys] = useState<string[]>([])
+  const [permissionTreeData] = useState<TreeDataNode[]>([])
+  const [selectedRowId] = useState<number | undefined>()
+  const [defaultPermCheckedKeys] = useState<string[]>([])
 
   // * 数据表格项
   const tableColumns: TableProps<ApiType.User.Info>['columns'] = [
@@ -116,12 +115,7 @@ const User: React.FC = () => {
               删除
             </Button>
           </Popconfirm>
-          <Button
-            variant="link"
-            color="primary"
-            size="small"
-            onClick={() => record.id && openAssignPermission(record.id)}
-          >
+          <Button variant="link" color="primary" size="small">
             分配权限
           </Button>
         </Space>
@@ -280,16 +274,6 @@ const User: React.FC = () => {
     await userApi.remove(id)
     message.success('删除成功')
     refresh()
-  }
-
-  const openAssignPermission = async (selectedRowId: number) => {
-    const permissionsData = generatePermissionByBizRoutes()
-    setPermissionTreeData(permissionsData)
-    setSelectedRowId(selectedRowId)
-    const { perms } = (await userApi.perms(selectedRowId)) ?? {}
-    const filteredPerms = filterChildKeys(perms ?? [])
-    setDefaultPermCheckedKeys(filteredPerms)
-    setAssignPermissionVisible(true)
   }
 
   const handleAssignPermission = async (checkedVal: string[]) => {

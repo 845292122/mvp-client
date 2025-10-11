@@ -1,57 +1,65 @@
+import { RouteInfo } from '~/router'
 import BizRoutes from '~/router/routes'
 
-type PermissionNode = {
-  key: string
-  title: string
-  icon?: string
-  children?: PermissionNode[]
+type BuildCtx = {
+  token?: string
+  role?: string
 }
 
-export function generatePermission(routes: RouteType.RouteInfo[]): PermissionNode[] {
-  return routes.flatMap(route => {
-    if (route.children) {
-      const children = generatePermission(route.children)
-      if (children.length > 0 && route.meta?.perm) {
-        return [
-          {
-            key: route.meta.perm,
-            title: route.meta.title,
-            children
-          }
-        ]
+function canDisplay(route: RouteInfo, ctx: BuildCtx): boolean {
+  const meta = route.meta
+  if (!meta) return true
+  if (meta.hidden) return false
+  if (meta.needAuth && ctx.token) return false
+  if (meta.needRoles && meta.needRoles.length > 0) {
+    if (!ctx.role) return false
+    return meta.needRoles.includes(ctx.role)
+  }
+  return true
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function travel(list: RouteInfo[], ctx: BuildCtx): any[] {
+  return list
+    .map(route => {
+      const children = route.children ? travel(route.children, ctx) : []
+
+      const display = canDisplay(route, ctx)
+
+      if (!display) {
+        // 父级不显示：把可显示的子节点上浮
+        return children.length ? children : null
       }
-      return children
+
+      // 构造当前节点
+      const meta = route.meta
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const node: any = {
+        path: route.path || '/',
+        name: meta?.title ?? '未知',
+        icon: meta?.icon ?? null
+      }
+
+      if (children.length) node.routes = children
+      return node
+    })
+    .flat()
+    .filter(Boolean)
+}
+
+// * 生成 ProLayout 需要的 route 对象
+export function buildProLayoutMenu(ctx: BuildCtx) {
+  const allRootChildren: RouteInfo[] = []
+  BizRoutes.forEach(r => {
+    if (r.children && !r.meta) {
+      allRootChildren.push(...r.children)
+    } else {
+      allRootChildren.push(r)
     }
-    if (route.meta?.perm) {
-      return [
-        {
-          key: route.meta.perm,
-          title: route.meta.title
-        }
-      ]
-    }
-    return []
   })
-}
 
-export function generatePermissionByBizRoutes(): PermissionNode[] {
-  return generatePermission(BizRoutes)
-}
-
-export function getParentKeys(routes: RouteType.RouteInfo[]): string[] {
-  const parentKeys: string[] = []
-  routes.forEach(route => {
-    if (route?.meta?.key && route?.children && route?.meta?.perm) {
-      parentKeys.push(route.meta.key)
-    }
-    if (route.children) {
-      parentKeys.push(...getParentKeys(route.children))
-    }
-  })
-  return parentKeys
-}
-
-export function filterChildKeys(keys: string[]): string[] {
-  const parentKeys = getParentKeys(BizRoutes)
-  return keys.filter(key => !parentKeys.includes(key))
+  return {
+    routes: travel(allRootChildren, ctx)
+  }
 }

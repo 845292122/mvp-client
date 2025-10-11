@@ -24,7 +24,15 @@ https://github.com/845292122/midway-server
 
 ### TODO
 
-- [x] 注销登录
+- [ ] 注销登录
 - [ ] 个人信息页面
 - [ ] 操作日志
 - [ ] 首页图表
+- [ ] 替换为pro-components
+  - [x] pro-layout -> 菜单渲染
+  - [ ] pro-layout -> 主题配置
+  - [x] pro-layout -> 路由权限
+  - [x] page-container
+  - [ ] 面包屑
+  - [ ] 账户页面
+  - [ ] 删除就依赖(ahooks,lodash)

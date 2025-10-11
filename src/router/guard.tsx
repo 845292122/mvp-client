@@ -1,14 +1,11 @@
 import { Navigate, useLocation } from 'react-router'
-import { routes } from '.'
+import { RouteInfo } from '.'
 import { useAtomValue } from 'jotai'
 import { authStore } from '~/store'
 
 // * 根据路由地址查找路由
-export function findRoute(
-  pathname: string,
-  routes: Array<RouteType.RouteInfo> = []
-): RouteType.RouteInfo {
-  let result: RouteType.RouteInfo = {}
+export function findRoute(pathname: string, routes: Array<RouteInfo> = []): RouteInfo {
+  let result: RouteInfo = {}
   for (const route of routes) {
     if (route.path === pathname) return route
     if (route.children) {
@@ -24,7 +21,6 @@ export function findRoute(
  */
 const AuthGuard = ({ children }: { children: JSX.Element }) => {
   const token = useAtomValue(authStore.tokenAtom)
-  const perms = useAtomValue(authStore.permAtom)
   const { pathname } = useLocation()
 
   // * 如果token存在并且访问login页面跳转到 /
@@ -38,12 +34,12 @@ const AuthGuard = ({ children }: { children: JSX.Element }) => {
   }
 
   // * 找到当前路由的 meta 信息
-  const route = findRoute(pathname, routes)
+  // const route = findRoute(pathname, routes)
 
   // * 需要有权限才能访问
-  if (route.meta.perm && !perms?.includes(route.meta.perm)) {
-    return <Navigate to="/403" />
-  }
+  // if (route.meta.perm && !perms?.includes(route.meta.perm)) {
+  //   return <Navigate to="/403" />
+  // }
 
   return children
 }

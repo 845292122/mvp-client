@@ -7,7 +7,6 @@ import { tenantApi } from '~/api'
 import AssignPermission from '~/components/AssignPermission'
 import InfoDrawer, { InfoDrawerFieldType, InfoDrawerFormValues } from '~/components/InfoDrawer'
 import QueryForm, { QueryFormField } from '~/components/QueryForm'
-import { filterChildKeys, generatePermissionByBizRoutes } from '~/utils'
 import type { TreeDataNode } from 'antd'
 
 // * 搜索表单项
@@ -331,12 +330,7 @@ const Tenant: React.FC = () => {
               删除
             </Button>
           </Popconfirm>
-          <Button
-            variant="link"
-            color="primary"
-            size="small"
-            onClick={() => record.id && openAssignPermission(record.id)}
-          >
+          <Button variant="link" color="primary" size="small">
             分配权限
           </Button>
         </Space>
@@ -366,9 +360,9 @@ const Tenant: React.FC = () => {
   const [infoVisible, setInfoVisible] = useState<boolean>(false)
   const [initialValues, setInitialValues] = useState<Record<string, unknown> | undefined>()
   const [assignPermissionVisible, setAssignPermissionVisible] = useState<boolean>(false)
-  const [permissionTreeData, setPermissionTreeData] = useState<TreeDataNode[]>([])
-  const [selectedRowId, setSelectedRowId] = useState<number | undefined>()
-  const [defaultPermCheckedKeys, setDefaultPermCheckedKeys] = useState<string[]>([])
+  const [permissionTreeData] = useState<TreeDataNode[]>([])
+  const [selectedRowId] = useState<number | undefined>()
+  const [defaultPermCheckedKeys] = useState<string[]>([])
   const { tableProps, refresh, search, data } = useAntdTable(getTableData, {
     defaultPageSize: 10,
     form
@@ -426,16 +420,6 @@ const Tenant: React.FC = () => {
     await tenantApi.remove(id)
     message.success('删除成功')
     refresh()
-  }
-
-  const openAssignPermission = async (selectedRowId: number) => {
-    const permissionsData = generatePermissionByBizRoutes()
-    setPermissionTreeData(permissionsData)
-    setSelectedRowId(selectedRowId)
-    const { perms } = (await tenantApi.perms(selectedRowId)) ?? {}
-    const filteredPerms = filterChildKeys(perms ?? [])
-    setDefaultPermCheckedKeys(filteredPerms)
-    setAssignPermissionVisible(true)
   }
 
   const handleAssignPermission = async (checkedVal: string[]) => {
