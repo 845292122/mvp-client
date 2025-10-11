@@ -19,8 +19,6 @@ export default function AppLayout() {
     role: 'admin'
   })
 
-  console.log(proRoute)
-
   return (
     <ProLayout
       title="管理后台"

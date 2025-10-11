@@ -4,6 +4,7 @@ import { HomeTwo, SettingTwo } from '@icon-park/react'
 import React, { lazy } from 'react'
 import { Spin } from 'antd'
 import { RouteInfo } from '.'
+import { Navigate } from 'react-router'
 
 const Loading = () => {
   return (
@@ -32,7 +33,6 @@ const BizRoutes: RouteInfo[] = [
         element: <Home />,
         meta: {
           title: '首页',
-          key: '/',
           icon: <HomeTwo theme="outline" size="18" strokeLinecap="square" />
         }
       }
@@ -42,42 +42,42 @@ const BizRoutes: RouteInfo[] = [
   // * 系统业务路由
   {
     element: <AppLayout />,
+    path: '/system',
     meta: {
-      key: '/system',
       title: '系统管理',
       icon: <SettingTwo theme="outline" size="18" strokeLinecap="square" />
     },
     children: [
       {
+        index: true,
+        element: <Navigate to="/system/user" replace />
+      },
+      {
         path: '/system/tenant',
         element: lazyLoad(() => import('~/pages/system/tenant')),
         meta: {
-          title: '租户管理',
-          key: '/system/tenant'
+          title: '租户管理'
         }
       },
       {
         path: '/system/user',
         element: lazyLoad(() => import('~/pages/system/user')),
         meta: {
-          title: '用户管理',
-          key: '/system/user'
+          title: '用户管理'
         }
       },
       {
         path: '/system/account',
         element: lazyLoad(() => import('~/pages/system/account')),
         meta: {
-          title: '账号管理',
-          key: '/system/account'
+          title: '账号管理'
         }
       },
       {
         path: '/system/log',
         element: lazyLoad(() => import('~/pages/system/log')),
         meta: {
-          title: '操作日志',
-          key: '/system/log'
+          title: '操作日志'
         }
       }
     ]
@@ -92,7 +92,6 @@ const BizRoutes: RouteInfo[] = [
         element: lazyLoad(() => import('~/pages/error/Unauthorized')),
         meta: {
           title: '未授权',
-          key: '403',
           hidden: true
         }
       },
@@ -101,8 +100,7 @@ const BizRoutes: RouteInfo[] = [
         element: lazyLoad(() => import('~/pages/error/NotFound')),
         meta: {
           title: '页面飞走了~',
-          hidden: true,
-          key: '404'
+          hidden: true
         }
       }
     ]

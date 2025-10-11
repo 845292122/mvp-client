@@ -8,6 +8,7 @@ type BuildCtx = {
 
 function canDisplay(route: RouteInfo, ctx: BuildCtx): boolean {
   const meta = route.meta
+  if (route.index) return false
   if (!meta) return true
   if (meta.hidden) return false
   if (meta.needAuth && ctx.token) return false
@@ -60,6 +61,7 @@ export function buildProLayoutMenu(ctx: BuildCtx) {
   })
 
   return {
+    path: '/',
     routes: travel(allRootChildren, ctx)
   }
 }
