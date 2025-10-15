@@ -1,5 +1,5 @@
 import { Navigate, useRoutes, type RouteObject } from 'react-router'
-import Login from '~/pages/login'
+import Login from '~/pages/login/index'
 import BizRoutes from './routes'
 
 export type RouteMeta = {

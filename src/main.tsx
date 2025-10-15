@@ -10,6 +10,7 @@ import './main.css'
 import '@icon-park/react/styles/index.css'
 import { App } from 'antd'
 import { store } from './store'
+import { ProConfigProvider, zhCNIntl } from '@ant-design/pro-components'
 
 const antdTheme: ThemeConfig = {
   token: {
@@ -21,13 +22,15 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <JotaiProvider store={store}>
       <ConfigProvider locale={zhCN} theme={antdTheme}>
-        <BrowserRouter>
-          <AuthGuard>
-            <App>
-              <Router />
-            </App>
-          </AuthGuard>
-        </BrowserRouter>
+        <ProConfigProvider intl={zhCNIntl}>
+          <BrowserRouter>
+            <AuthGuard>
+              <App>
+                <Router />
+              </App>
+            </AuthGuard>
+          </BrowserRouter>
+        </ProConfigProvider>
       </ConfigProvider>
     </JotaiProvider>
   </StrictMode>
