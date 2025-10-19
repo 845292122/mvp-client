@@ -1,54 +1,108 @@
-import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
-import { Button, Flex, Input, Table } from 'antd'
-import { useState } from 'react'
-import CommonPage from '~/components/CommonPage'
-// import { InfoModalFieldType } from '~/components/InfoModal'
+import { ProTable, type ActionType, type ProColumns } from '@ant-design/pro-components'
+import { useRef } from 'react'
+import { accountApi } from '~/api'
+import AccountModalForm from './AccountModalForm'
+
+export type AccountInfoItem = {
+  id: string
+  phone: string
+  role: number
+  status: number
+  isPremium: number
+  startDate: Date
+  endDate: Date
+  contact: string
+  shopName: string
+  creditCode: string
+  address: string
+  domain: string
+  birthday: Date
+  email: string
+  loginIp: string
+  loginDate: Date
+  remark: string
+}
 
 export default function Account() {
-  // const [contextHolder] = message.useMessage()
-  const [tabelData] = useState([])
+  const actionRef = useRef<ActionType>()
 
-  // const infoFields: InfoModalFieldType[] = [
-  //   {
-  //     name: 'id',
-  //     label: 'ID',
-  //     type: 'input',
-  //     span: 0
-  //   },
-  //   {
-  //     name: 'phone',
-  //     label: '手机号',
-  //     type: 'input',
-  //     rules: [{ required: true, message: '手机号不能为空' }]
-  //   }
-  // ]
+  const columns: ProColumns<AccountInfoItem>[] = [
+    {
+      title: '账户ID',
+      dataIndex: 'id',
+      search: false
+    },
+    {
+      title: '店铺名称',
+      dataIndex: 'shopName'
+    },
+    {
+      title: '联系人',
+      dataIndex: 'contact',
+      search: false
+    },
+    {
+      title: '联系电话',
+      dataIndex: 'phone',
+      search: false
+    },
+    {
+      title: 'Premium',
+      dataIndex: 'isPremium',
+      valueType: 'select',
+      valueEnum: {
+        0: { text: '否' },
+        1: { text: '是' }
+      }
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      search: false
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      key: 'option',
+      render: () => [
+        <a key="editable">编辑</a>,
+        <a target="_blank" rel="noopener noreferrer" key="view">
+          查看
+        </a>
+      ]
+    }
+  ]
 
   return (
-    <CommonPage>
-      {/* {contextHolder} */}
-
-      {/* 操作区域 */}
-      <Flex justify="space-between" align="end">
-        <div>
-          <Input prefix={<SearchOutlined />} placeholder="输入关键字以查询" />
-        </div>
-        <div>
-          <Button icon={<PlusOutlined />} type="primary">
-            新增
-          </Button>
-        </div>
-      </Flex>
-
-      {/* 数据表格 */}
-      <Table dataSource={tabelData} style={{ marginTop: 16 }} rowKey="id" scroll={{ x: 800 }}>
-        <Table.Column title="ID" dataIndex="id" key="id" />
-        <Table.Column title="手机号" dataIndex="phone" key="phone" />
-        <Table.Column title="角色" dataIndex="role" key="role" />
-        <Table.Column title="状态" dataIndex="status" key="status" />
-        <Table.Column title="Premium" dataIndex="isPremium" key="isPremium" />
-        <Table.Column title="创建时间" dataIndex="createdAt" key="createdAt" />
-        <Table.Column title="操作" key="action" render={() => <a>编辑</a>} />
-      </Table>
-    </CommonPage>
+    <>
+      <ProTable<AccountInfoItem>
+        actionRef={actionRef}
+        columns={columns}
+        rowKey="id"
+        search={{
+          labelWidth: 'auto'
+        }}
+        cardBordered
+        revalidateOnFocus
+        headerTitle="账户列表"
+        pagination={{
+          pageSize: 10
+        }}
+        request={async params => {
+          const { records, total } = await accountApi.page(params)
+          return {
+            data: records,
+            total
+          }
+        }}
+        options={{
+          setting: {
+            listsHeight: 400
+          }
+        }}
+        dateFormatter="string"
+        toolBarRender={() => [<AccountModalForm actionRef={actionRef} />]}
+      />
+    </>
   )
 }
