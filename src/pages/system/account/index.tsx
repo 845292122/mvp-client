@@ -1,7 +1,9 @@
 import { ProTable, type ActionType, type ProColumns } from '@ant-design/pro-components'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { accountApi } from '~/api'
 import AccountModalForm from './AccountModalForm'
+import { Button } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
 
 export type AccountInfoItem = {
   id: string
@@ -25,6 +27,8 @@ export type AccountInfoItem = {
 
 export default function Account() {
   const actionRef = useRef<ActionType>()
+  const [accountFormOpen, setAccountFormOpen] = useState<boolean>(false)
+  const [editId, setEditId] = useState<number | undefined>(undefined)
 
   const columns: ProColumns<AccountInfoItem>[] = [
     {
@@ -64,14 +68,26 @@ export default function Account() {
       title: '操作',
       valueType: 'option',
       key: 'option',
-      render: () => [
-        <a key="editable">编辑</a>,
+      render: (_, record) => [
+        <a key="editable" onClick={() => handleEditAccountForm(Number(record.id))}>
+          编辑
+        </a>,
         <a target="_blank" rel="noopener noreferrer" key="view">
-          查看
+          设置Premium
         </a>
       ]
     }
   ]
+
+  function handleAddAccountForm() {
+    setEditId(undefined)
+    setAccountFormOpen(true)
+  }
+
+  function handleEditAccountForm(id: number) {
+    setEditId(id)
+    setAccountFormOpen(true)
+  }
 
   return (
     <>
@@ -101,7 +117,22 @@ export default function Account() {
           }
         }}
         dateFormatter="string"
-        toolBarRender={() => [<AccountModalForm actionRef={actionRef} />]}
+        toolBarRender={() => [
+          <Button
+            key="button"
+            icon={<PlusOutlined />}
+            type="primary"
+            onClick={handleAddAccountForm}
+          >
+            新增
+          </Button>
+        ]}
+      />
+      <AccountModalForm
+        actionRef={actionRef}
+        open={accountFormOpen}
+        onOpenChange={setAccountFormOpen}
+        editId={editId}
       />
     </>
   )
